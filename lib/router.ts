@@ -18,11 +18,14 @@ import { get_config } from "../events/get_config";
 import { player_join } from '../events/player_join';
 import { fetchAll } from "../events/fetchAll";
 import { player_leave } from "../events/player_leave";
+import { GET_apikey } from "../endpoints/GET_apikey";
 
 export const Router: Function = (app) => {
     app.get("/", (req, res) => {
         res.status(200).send("<h1>Yay, Observer is working!</h1> <p>You did a great job.</p>");
     })
+
+    app.get("/apikey", (req, res) => GET_apikey(req, res))
 
     /**
      * Get's executed before a connection gets created.

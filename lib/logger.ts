@@ -1,54 +1,100 @@
-var chalk = require('chalk'); // For colors in the console.
-import { TimeManager } from './TimeManager';
+import * as chalk from 'chalk';
 import { config } from '../config';
+import { MinKey } from 'typeorm';
 
 export enum modes {
-    ERROR,
-    DEBUG,
+    NORMAL,
     HINT,
     WARN,
-    SUCCESS
+    ERROR,
+    SUCCESS,
+    CRITICAL,
+    DEBUG
 }
 
-export const logger: Function = function(message: string, type: modes) {
-    // Editing message
-    let spaces: number = (TimeManager().length + 5 + type.toString().length);
-    let toReplace: string = "";
-    for(let i: number = 0; i < spaces; i++) toReplace += " ";
+/**
+ * @returns Stunden:Minuten:Sekunden:Millisekunden
+ */
+export const time: Function = function getTime() {
+    var date = new Date();
 
-    message = message.replace(/\n/gi, "\n" + toReplace);
+    // Hours
+    var hour: string = date.getHours().toString();
+    hour = (parseInt(hour) < 10 ? "0" : "") + hour;
 
-    // If the message is empty or null/undefined.
-    if(message == "" || message == null || message == undefined) {
-        message = TimeManager() + chalk.italic("EMPTY");
-    }
-    // If type is undefined or null it's a regular message.
-    if(type == undefined || type == null) {
-        console.log(TimeManager() + chalk.gray("MESSAGE: ") + message);
-    }
+    // Minutes
+    var min: string  = date.getMinutes().toString();
+    min = (parseInt(min) < 10 ? "0" : "") + min;
 
-    // If type is error.
-    if(type == modes.ERROR) {
-        console.log(TimeManager() + chalk.red("ERROR: ") + message);
-    }
+    // Seconds
+    var sec: string = date.getSeconds().toString();
+    sec = (parseInt(sec) < 10 ? "0" : "") + sec;
 
-    // If type is debug.
-    if(type == modes.DEBUG && config.development.debug) {
-        console.log(TimeManager() + chalk.cyan("DEBUG: ") + message);
-    }
+    // Millis
+    var milli: string = date.getMilliseconds().toString();
+    milli = (parseInt(milli) < 10 ? "00" : "") + milli;
+    milli = (parseInt(milli) < 100 ? "0" : "") + milli;
 
-    // If type is hint.
-    if(type == modes.HINT) {
-        console.log(TimeManager() + chalk.yellow("HINT: ")+ message);
-    }
+    return "[" + hour + ":" + min + ":" + sec + "," + milli + "] ";
+}
 
-    // If type is warning.
-    if(type == modes.WARN) {
-        console.log(TimeManager() + chalk.magenta("WARN: ") + message);
-    }
+export const datetime: Function = (): string => {
+    let date: Date = new Date()
 
-    // If type is success.
-    if(type == modes.SUCCESS) {
-        console.log(TimeManager() + chalk.green("SUCCESS: ") + message);
+    // Month
+    let month: string = date.getUTCMonth().toString();
+    month = (parseInt(month) < 10 ? "0" : "") + month;
+
+    // Day
+    let day: string = date.getUTCDate().toString();
+    day = (parseInt(day) < 10 ? "0" : "") + day;
+
+    // Hours
+    let hour: string = date.getHours().toString();
+    hour = (parseInt(hour) < 10 ? "0" : "") + hour;
+
+    // Minutes
+    let min: string  = date.getMinutes().toString();
+    min = (parseInt(min) < 10 ? "0" : "") + min;
+
+    // Seconds
+    let sec: string = date.getSeconds().toString();
+    sec = (parseInt(sec) < 10 ? "0" : "") + sec;
+
+    return date.getFullYear() + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
+}
+
+/**
+ * 
+ * @param message Deine Nachricht
+ * @param priority Die Priorität der Nachricht
+ */
+export const logger: Function = function(message: string, priority: modes) {
+    switch(priority) {
+        case modes.NORMAL:
+            console.log(time() + chalk.default.gray("MESSAGE:\t") + message);
+            break;
+        case modes.SUCCESS:
+            console.log(time() + chalk.default.green("SUCCESS:\t") + message);
+            break;
+        case modes.HINT:
+            console.log(time() + chalk.default.yellow("HINT:\t") + message);
+            break;
+        case modes.WARN:
+            console.log(time() + chalk.default.keyword('orange')("WARN:\t") + message);
+            break;
+        case modes.ERROR:
+            console.log(time() + chalk.default.redBright("# ERROR:\t") + message);
+            break;
+        case modes.CRITICAL:
+            console.log(time() + chalk.default.redBright("# CRITICAL:\t") + message);
+            process.exit();
+            break;
+        case modes.DEBUG:
+            if(config.development.debug) console.log(time() + chalk.default.cyan("DEBUG:\t") + message);
+            break;
+        default:
+            console.log(time() + chalk.default.gray("MESSAGE: ") + message);
+            break;
     }
 }

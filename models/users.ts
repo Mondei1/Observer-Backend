@@ -1,10 +1,5 @@
 import { Entity, PrimaryColumn, Column, BaseEntity, PrimaryGeneratedColumn } from "typeorm";
 
-export enum _types {
-    USER,
-    CLIENT
-}
-
 @Entity()
 export class Users extends BaseEntity {
 
@@ -16,12 +11,6 @@ export class Users extends BaseEntity {
 
     @Column('varchar')
     password: string;
-
-    @Column({
-        type: 'varchar',
-        length: 5
-    })
-    type: _types
 
     /**
      * + = Everything is fine.
