@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "This is the backend for Observer. Here get's all data processed and managed.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm install && ts-node ./app.ts"
+  },
+  "author": "Mondei1",
+  "license": "MIT",
+  "dependencies": {
+    "angular2-notifications": "^1.0.1",
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.2",
+    "chalk": "^2.4.1",
+    "class-validators": "^1.0.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "mysql": "^2.15.0",
+    "socket.io": "^2.1.0",
+    "ts-node": "^6.0.2",
+    "typeorm": "^0.2.3",
+    "typescript": "^2.8.3"
+  }
+}
