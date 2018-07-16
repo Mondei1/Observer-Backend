@@ -6,10 +6,9 @@ The **Client** sends data to the backend and the **frontend** display's it.
 
 ## Dependencies
 You have to install the following software to install and run this backend:
-* NodeJS: [Linux or macOS](https://nodejs.org/en/download/package-manager/) via package manager.
- Windows: [NodeJS](https://nodejs.org/dist/v8.11.3/node-v8.11.3-x86.msi)
+* NodeJS: [Linux or macOS](https://nodejs.org/en/download/package-manager/) via package manager or for [Windows](https://nodejs.org/dist/v8.11.3/node-v8.11.3-x86.msi).
 * [Git](https://git-scm.com) (optional, you can download the zip instead)
-* Nano: `sudo apt install nano` (recommended, to edit config file)
+* (Nano: `sudo apt install nano`, recommended to edit config files)
 ## Install
 1. First clone this repository with git or [download zip](https://github.com/Mondei1/Observer-Backend/archive/master.zip) from Github: 
 ```sh
