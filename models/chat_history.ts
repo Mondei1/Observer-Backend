@@ -12,7 +12,7 @@ export class ChatHistory extends BaseEntity {
 
     @Column({
         type: 'varchar',
-        length: 100
+        length: 256
     })
     message: string;
 

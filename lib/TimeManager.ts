@@ -32,11 +32,13 @@ export async function AFKChecker() {
         await _STATS.ONLINE_PLAYERS.forEach(async (player) => {
             if(player.afk != true) {
                 player.onlineTime += 1;
-                logger("Add one second to the online time from " + player.name + "\tSave time: " + save, modes.DEBUG)
+                //logger("Add one second to the online time from " + player.name + "\tSave time: " + save, modes.DEBUG)
             }            
             if(save == 0) {
-                await logger("Save.", modes.DEBUG)
-                await MCProfiles.create(player).save();
+                //await logger("Save...", modes.DEBUG)
+                const copy = await MCProfiles.findOne({where: { uuid: player.uuid }});
+                copy.onlineTime = player.onlineTime;
+                await copy.save()
             }
         })
         if(save == 0) save = 61;
