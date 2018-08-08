@@ -1,16 +1,16 @@
 # Observer-Backend
 Welcome to the core of Observer. Here get's all data processed and managed.
 
-The **Client** sends data to the backend and the **frontend** display's it.
+The **Client** sends data to the backend and the **Frontend** display's it.
 
 
 ## Dependencies
-You have to install the following software to install and run this backend:
-* NodeJS: [Linux or macOS](https://nodejs.org/en/download/package-manager/) via package manager or for [Windows](https://nodejs.org/dist/v8.11.3/node-v8.11.3-x86.msi).
+You have to install the following software to install and run the backend:
+* NodeJS: [Linux or macOS](https://nodejs.org/en/download/package-manager/) via package manager or for [Windows](https://nodejs.org/dist/v8.11.3/node-v8.11.3-x86.msi) with installer.
 * [Git](https://git-scm.com) (optional, you can download the zip instead)
 * (Nano: `sudo apt install nano`, recommended to edit config files)
 ## Install
-1. First clone this repository with git or [download zip](https://github.com/Mondei1/Observer-Backend/archive/master.zip) from Github: 
+1. First clone this repository into a directory of your choice (recommend `/opt/Observer`) with git or [download zip](https://github.com/Mondei1/Observer-Backend/archive/master.zip) from Github: 
 ```sh
 git clone https://github.com/Mondei1/Observer-Backend.git
 ```
@@ -18,7 +18,7 @@ git clone https://github.com/Mondei1/Observer-Backend.git
 ```sh
 cd Observer-Backend/
 ```
-3. Install all dependencies (this can take a while, depends on your network):
+3. Install all NodeJS dependencies for this project (this can take a while, depends on your network):
 ```sh
 npm install
 ```
@@ -26,19 +26,19 @@ npm install
 ```sh
 nano config.ts
 ```
-5. Change your JWT Key ([What?](https://jwt.io/introduction/)) at the buttom of your config. Change it to something save. You don't have to remember this key, just take a hard one. You can use [this](http://passwordsgenerator.net) website to create a really loooong password.
+5. Change your JWT Key ([What?](https://jwt.io/introduction/)) at the buttom of your config. Change it to something save. You don't have to remember this key, just take a hard one. You can use [this](http://passwordsgenerator.net) website to create a really loooong password. So it looks like that If you paranoid: `F8%X*fh$x?Wn=B$T2#nEab9#%G...(2022 more)`
 ```
 {
     ...
     jwtKey: "better_nobody_know_this_key"
 }
 ```
-6. Exit nano with `STRG + X` then `y` and to exit press `ENTER`.
-7. Edit your database connection in `ormconfig.json`.
+6. Exit nano with `STRG + X` then press `y` and to exit press `ENTER`.
+7. Open `ormconfig.json` for database configuration.
 ```sh
 nano ormconfig.json
 ```
-8. Edit the following entry's to your database. Only these:
+8. Edit only these entry's:
 ```json
 {
     "type": "mysql",

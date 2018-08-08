@@ -1,5 +1,6 @@
-import { Entity, PrimaryColumn, Column, BaseEntity, PrimaryGeneratedColumn, AfterUpdate, AfterInsert } from "typeorm";
+import { Entity, PrimaryColumn, Column, BaseEntity, PrimaryGeneratedColumn, AfterUpdate, AfterInsert, ManyToOne } from "typeorm";
 import { validateOrReject } from 'class-validators';
+import { Bungeecords } from "./bungeecords";
 
 @Entity()
 export class Join_History extends BaseEntity {
@@ -15,6 +16,9 @@ export class Join_History extends BaseEntity {
         type: 'varchar'
     })
     player: string;
+
+    @ManyToOne(type => Bungeecords, bungeecords => bungeecords.joinHistory)
+    network: Bungeecords;
 
     @AfterUpdate()
     @AfterInsert()

@@ -12,7 +12,6 @@ export const POST_auth: Function = async (req, res) => {
     }
     let username: string = req.body.username;
     let password: string = req.body.password;
-    let realtime: boolean = req.body.realtime;
 
     // Check if user exists in DB.
     let user: Users = await Users.findOne({

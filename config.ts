@@ -15,8 +15,8 @@ export const config: any = {
         /* WARNING: IF YOU ENABLE ONE OF THESE OPTIONS, YOUR COMPLETE DATABASE WILL BE DELETED AND RESTED WITH DUMMY DATA!! */
         dummys: {
             /* If enabled, test users and or dummy data get generated. */
-            users: true,
-            data: true
+            users: false,
+            data: false
         }
     },
 
@@ -26,17 +26,17 @@ export const config: any = {
     /** Observer salt the passwords from all users, that, in case the DB get hacked, the hacker
      *  can't use rainbowtables to crack them.
      * 
-     *  This value represents the amount of rounds, how long the password will be salted.
+     *  This value represents the amount of rounds, how often the password will be salted.
      *  Is the value high it will be take much longer then a less value. To learn more about
      *  this, take a look at this page: https://www.npmjs.com/package/bcrypt#a-note-on-rounds
      */
-    saltRounds: 11,
+    saltRounds: 12,
 
-    /** Don't tell anyone (only people you can trust) this key, because the server sign every
+    /** Don't tell anyone this key, because the server sign every
      *  login with this key, so nobody else, except the server, can create a valid token.
      * 
      * HINT: If you change this key, all other keys that exists will be unvailed and all users
      *       have to login again.
     */
-    jwtKey: "better_nobody_know_this_key"
+    jwtKey: "better_nobody_know_this_key",
 }

@@ -8,6 +8,8 @@ export enum modes {
     WARN,
     ERROR,
     SUCCESS,
+    NETWORK,
+    CHAT,
     CRITICAL,
     DEBUG
 }
@@ -82,6 +84,12 @@ export const logger: Function = function(message: string, priority: modes) {
             break;
         case modes.WARN:
             console.log(time() + chalk.default.keyword('orange')("WARN:\t") + message);
+            break;
+        case modes.NETWORK:
+            console.log(time() + chalk.default.magenta("NETWORK:\t") + message);
+            break;
+        case modes.CHAT:
+            console.log(time() + chalk.default.magenta("CHAT:\t") + message);
             break;
         case modes.ERROR:
             console.log(time() + chalk.default.redBright("# ERROR:\t") + message);

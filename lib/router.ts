@@ -1,4 +1,4 @@
-import { _VERSION, _AUTHOR } from "../app";
+import { _VERSION, _AUTHOR, _STATS } from "../app";
 import { validate } from "./validateToken";
 import { isClient } from "./isClient";
 import { POST_auth } from "../endpoints/POST_auth";
@@ -12,25 +12,28 @@ import { config } from "../config";
 import { client_config } from "../client_config";
 import { logger, modes } from "./logger";
 import { _IO } from '../app';
-import { add_SOCKETS, remove_SOCKETS } from '../lib/globale_vars';
 
 import { get_config } from "../events/get_config";
 import { player_join } from '../events/player_join';
 import { fetchAll } from "../events/fetchAll";
 import { player_leave } from "../events/player_leave";
-import { GET_apikey } from "../endpoints/GET_apikey";
+import { POST_apikey } from "../endpoints/POST_apikey";
+import { Server_logout } from "../events/server_logout";
+import { player_switch } from "../events/player_switch";
+import { player_afk } from "../events/player_afk";
+import { player_chat } from "../events/player_chat";
 
 export const Router: Function = (app) => {
     app.get("/", (req, res) => {
         res.status(200).send("<h1>Yay, Observer is working!</h1> <p>You did a great job.</p>");
     })
 
-    app.get("/apikey", (req, res) => GET_apikey(req, res))
+    app.post("/apikey", (req, res) => POST_apikey(req, res))
 
     /**
      * Get's executed before a connection gets created.
      */ 
-    _IO.use((socket, next) => {
+    _IO.use((socket: any, next) => {
         if (socket.handshake.query && socket.handshake.query.token) {
             jwt.verify(socket.handshake.query.token, config.jwtKey, function(err, decoded) {
                 if(err) return next(new Error('Token not vaild!'));
@@ -58,6 +61,9 @@ export const Router: Function = (app) => {
             }
         })
 
+        // Set 'server logout'
+        socket.on('server logout', (data) => Server_logout(data, socket));
+
         // Set 'get config'
         socket.on('get config', (data) => get_config(data, socket))
 
@@ -69,6 +75,12 @@ export const Router: Function = (app) => {
 
         // Set 'player leave'
         socket.on('player leave', (data) => player_leave(data, socket))
+
+        socket.on('player switch', (data) => player_switch(data, socket))
+
+        socket.on('player afk', (data) => player_afk(data, socket))
+
+        socket.on('player chat', (data) => player_chat(data, socket))
 
         // Set 'broadcast-msg'.
         socket.on('broadcast-msg', (data) => {
@@ -84,10 +96,10 @@ export const Router: Function = (app) => {
         // Set 'disconnect'
         socket.on('disconnect', (socket) => {
             logger("Client disconnect!",  modes.DEBUG);
-            remove_SOCKETS(socket)
+            _STATS.SOCKETS -= 1;
         })
 
-        add_SOCKETS(socket)
+        _STATS.SOCKETS += 1;
         //socket.broadcast.emit("new socket", socket)
     });
 
