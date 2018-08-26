@@ -22,6 +22,8 @@ import { Server_logout } from "../events/server_logout";
 import { player_switch } from "../events/player_switch";
 import { player_afk } from "../events/player_afk";
 import { player_chat } from "../events/player_chat";
+import { GET_allPlayers } from "../endpoints/GET_allPlayers";
+import { GET_player } from "../endpoints/GET_player";
 
 export const Router: Function = (app) => {
     app.get("/", (req, res) => {
@@ -29,6 +31,9 @@ export const Router: Function = (app) => {
     })
 
     app.post("/apikey", (req, res) => POST_apikey(req, res))
+
+    app.get("/allplayers", validate, (req, res) => GET_allPlayers(req, res))
+    app.get("/player/:uuid", validate, (req, res) => GET_player(req, res))
 
     /**
      * Get's executed before a connection gets created.

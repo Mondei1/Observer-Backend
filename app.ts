@@ -4,6 +4,7 @@ import * as bp from 'body-parser';
 import * as cors from 'cors';
 import * as socket from 'socket.io';
 import * as http from 'http';
+import * as bcrypt from 'bcrypt';
 
 import { logger, modes } from './lib/logger';
 import { config } from './config';
@@ -13,6 +14,7 @@ import { Users } from './models/users';
 import { Router } from './lib/router';
 import { Stats } from './lib/stats';
 import { AFKChecker } from './lib/TimeManager';
+import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
 export let _CONNECTION: Connection = null;
 export let _IO: socket.Server = null
@@ -35,8 +37,18 @@ async function run() {
     if (config.development.dummys.users) await seedUsers();
 
     // Check if users are available.
-    if (await _CONNECTION.getRepository(Users).count() == 0) logger("You need to create a superuser! Open the frontend to do that.\n" +
-        "Otherwise, this thing here becomes useless, do you want this? No.", modes.HINT);
+    if (await _CONNECTION.getRepository(Users).count() == 0) {
+        await Users.create({
+            username: "admin",
+            password: await encryptPassword("admin"),
+            state: '+',
+            permissions: ['*']
+        }).save()
+        logger("\n========================\nUser table is empty right now. Created default admin account:\n\n" +
+            "Username: admin\nPassword: admin\n\n" +
+            "Login with these login credentials and replace this account with an other username and stronger password.\n"+
+            "========================", modes.HINT);
+}
 
     app.use(cors())
     app.use(bp.urlencoded({ extended: false }))
@@ -55,6 +67,8 @@ async function run() {
     return null
 }
 
+/* Some random methods */
+
 export function randString(length: number) {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -62,6 +76,18 @@ export function randString(length: number) {
     for (var i = 0; i < length; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+}
+
+export async function encryptPassword(passsword: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+        bcrypt.hash(passsword, config.saltRounds, (err, encrypted) => {
+            if(err) {
+                throw err;
+            } else {
+                resolve(encrypted)
+            }
+        })
+    })
 }
 
 run();

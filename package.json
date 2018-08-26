@@ -10,6 +10,7 @@
   "author": "Mondei1",
   "license": "MIT",
   "dependencies": {
+    "@types/bcrypt": "^2.0.0",
     "@types/localforage": "0.0.34",
     "@types/socket.io": "^1.4.36",
     "bcrypt": "^2.0.1",

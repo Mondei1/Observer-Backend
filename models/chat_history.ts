@@ -17,6 +17,6 @@ export class ChatHistory extends BaseEntity {
     message: string;
 
     @Column('datetime')
-    timestamp: number;
+    timestamp: string;
 
 }
